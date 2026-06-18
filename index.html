@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Amore Flow</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --bg: #f6f3ef;
+      --white: #ffffff;
+      --text: #3f4743;
+      --muted: #8b928f;
+      --green: #75837d;
+      --green-dark: #586862;
+      --pink: #ead3cf;
+      --pink-dark: #c89f99;
+      --shadow: 0 18px 45px rgba(60, 70, 65, 0.14);
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      padding-bottom: 92px;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    button,
+    input,
+    textarea {
+      font-family: inherit;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background: var(--bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 72px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(246, 243, 239, 0.94);
+      backdrop-filter: blur(14px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--green-dark);
+    }
+
+    .brand-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--white);
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Georgia, serif;
+      font-size: 21px;
+      font-style: italic;
+      color: var(--green-dark);
+      flex: 0 0 auto;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.82);
+      color: var(--green-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -3px;
+      right: -3px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 20px;
+      background: var(--pink-dark);
+      color: #fff;
+      font-size: 11px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .profile-card {
+      margin: 0 16px 14px;
+      padding: 12px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 12px 30px rgba(67, 75, 71, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: linear-gradient(135deg, #e6d4cf, #78877f);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      flex: 0 0 auto;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .hello {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+
+    .profile-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hero {
+      margin: 0 16px 28px;
+      min-height: 430px;
+      border-radius: 34px;
+      overflow: hidden;
+      position: relative;
+      background: #d9ddd7;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 1;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background:
+        linear-gradient(90deg, rgba(34, 43, 39, 0.70), rgba(34, 43, 39, 0.20)),
+        linear-gradient(0deg, rgba(34, 43, 39, 0.24), rgba(34, 43, 39, 0.04));
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      padding: 150px 24px 28px;
+      min-height: 430px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .hero-title {
+      font-family: Georgia, serif;
+      font-size: clamp(58px, 16vw, 88px);
+      line-height: 0.84;
+      color: #fff;
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: -0.08em;
+      text-shadow: 0 8px 25px rgba(0, 0, 0, 0.22);
+      margin-bottom: 16px;
+    }
+
+    .hero-subtitle {
+      color: rgba(255, 255, 255, 0.94);
+      font-size: 15px;
+      line-height: 1.45;
+      max-width: 285px;
+      margin-bottom: 22px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+    }
+
+    .hero-btn {
+      width: fit-content;
+      min-width: 205px;
+      height: 52px;
+      padding: 0 28px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.94);
+      color: var(--green-dark);
+      font-size: 15px;
+      font-weight: 700;
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.18);
+    }
+
+    .section {
+      padding: 0 16px 28px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: Georgia, serif;
+      font-size: clamp(36px, 10vw, 50px);
+      line-height: 0.92;
+      font-weight: 400;
+      color: var(--green);
+      font-style: italic;
+      letter-spacing: -0.08em;
+    }
+
+    .section-link {
+      color: var(--muted);
+      background: transparent;
+      font-size: 13px;
+      white-space: nowrap;
+      padding-bottom: 5px;
+    }
+
+    .categories {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      scrollbar-width: none;
+      margin-bottom: 14px;
+    }
+
+    .categories::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-btn {
+      flex: 0 0 auto;
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.76);
+      color: var(--green-dark);
+      font-size: 14px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .cat-btn.active {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .product-card {
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.78);
+      overflow: hidden;
+      box-shadow: 0 12px 28px rgba(60, 70, 65, 0.10);
+      position: relative;
+    }
+
+    .product-img {
+      height: 190px;
+      position: relative;
+      overflow: hidden;
+      background: #ddd;
+    }
+
+    .product-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s ease;
+    }
+
+    .product-card:active .product-img img {
+      transform: scale(1.04);
+    }
+
+    .fav {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.80);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--green-dark);
+      z-index: 2;
+    }
+
+    .fav.active {
+      background: var(--pink-dark);
+      color: #fff;
+    }
+
+    .product-body {
+      padding: 13px 12px 14px;
+      text-align: center;
+    }
+
+    .product-name {
+      min-height: 38px;
+      font-size: 15px;
+      line-height: 1.2;
+      text-transform: uppercase;
+      color: var(--green-dark);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .product-desc {
+      min-height: 34px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 11px;
+    }
+
+    .product-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+    }
+
+    .small-btn {
+      height: 36px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      background: transparent;
+      color: var(--green-dark);
+      border: 1px solid rgba(88, 104, 98, 0.32);
+    }
+
+    .small-btn.fill {
+      background: var(--green);
+      color: #fff;
+      border-color: var(--green);
+    }
+
+    .banner-stack {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .wide-banner {
+      height: 118px;
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 12px 28px rgba(60, 70, 65, 0.12);
+      background: #ddd;
+    }
+
+    .wide-banner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.72);
+    }
+
+    .wide-banner span {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Georgia, serif;
+      font-style: italic;
+      font-size: 42px;
+      letter-spacing: -0.06em;
+      color: rgba(255, 255, 255, 0.94);
+      text-shadow: 0 8px 28px rgba(0, 0, 0, 0.26);
+    }
+
+    .about {
+      padding: 22px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 12px 28px rgba(60, 70, 65, 0.09);
+    }
+
+    .about p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      margin-top: 10px;
+    }
+
+    .bottom-nav {
+      width: calc(100% - 28px);
+      max-width: 492px;
+      height: 72px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.90);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 -10px 35px rgba(60, 70, 65, 0.13);
+      position: fixed;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      z-index: 80;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      padding: 8px;
+    }
+
+    .nav-btn {
+      border-radius: 20px;
+      background: transparent;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .nav-btn.active {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(34, 42, 38, 0.48);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 14px;
+    }
+
+    .modal.open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 520px;
+      border-radius: 32px;
+      background: var(--bg);
+      padding: 18px;
+      box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.18);
+      animation: slideUp 0.24s ease;
+      max-height: 88vh;
+      overflow-y: auto;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(40px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .modal-title {
+      font-size: 22px;
+      color: var(--green-dark);
+      font-weight: 800;
+    }
+
+    .close {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--green-dark);
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .details-img {
+      width: 100%;
+      height: 260px;
+      border-radius: 24px;
+      overflow: hidden;
+      margin-bottom: 14px;
+      background: #ddd;
+    }
+
+    .details-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .details-text {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.55;
+      margin-bottom: 16px;
+    }
+
+    .form {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .field {
+      width: 100%;
+      height: 52px;
+      border-radius: 16px;
+      border: 1px solid rgba(88, 104, 98, 0.15);
+      background: rgba(255, 255, 255, 0.82);
+      padding: 0 15px;
+      outline: none;
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    textarea.field {
+      height: 92px;
+      padding-top: 15px;
+      resize: none;
+    }
+
+    .order-btn {
+      width: 100%;
+      height: 56px;
+      border-radius: 18px;
+      background: var(--green);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      box-shadow: 0 14px 30px rgba(88, 104, 98, 0.25);
+      margin-top: 4px;
+      white-space: nowrap;
+    }
+
+    .cart-list {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .cart-item {
+      display: grid;
+      grid-template-columns: 74px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.76);
+      padding: 9px;
+      border-radius: 20px;
+    }
+
+    .cart-item img {
+      width: 74px;
+      height: 74px;
+      border-radius: 16px;
+      object-fit: cover;
+    }
+
+    .cart-item h4 {
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: var(--green-dark);
+    }
+
+    .cart-item p {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .remove {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--muted);
+      font-size: 20px;
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 2px 8px;
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--green-dark);
+    }
+
+    .empty {
+      text-align: center;
+      padding: 34px 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 96px;
+      transform: translateX(-50%) translateY(30px);
+      width: calc(100% - 32px);
+      max-width: 488px;
+      padding: 16px 18px;
+      border-radius: 22px;
+      background: var(--green-dark);
+      color: #fff;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, 0.2);
+      z-index: 140;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.25s ease;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .success-screen {
+      text-align: center;
+      padding: 22px 8px 8px;
+    }
+
+    .success-icon {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      margin: 0 auto 18px;
+      background: var(--green);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      box-shadow: 0 18px 38px rgba(88, 104, 98, 0.28);
+    }
+
+    .success-screen h3 {
+      font-size: 24px;
+      color: var(--green-dark);
+      margin-bottom: 8px;
+    }
+
+    .success-screen p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    @media (min-width: 700px) {
+      body {
+        background: #f4f1ec;
+      }
+
+      .app {
+        box-shadow: 0 0 80px rgba(60, 70, 65, 0.08);
+      }
+    }
+
+    @media (max-width: 420px) {
+      .topbar {
+        height: 66px;
+        padding: 12px 14px;
+      }
+
+      .brand {
+        font-size: 11px;
+      }
+
+      .brand-logo {
+        width: 31px;
+        height: 31px;
+      }
+
+      .profile-card {
+        margin-left: 12px;
+        margin-right: 12px;
+      }
+
+      .hero {
+        margin-left: 12px;
+        margin-right: 12px;
+        min-height: 398px;
+        border-radius: 30px;
+      }
+
+      .hero-content {
+        min-height: 398px;
+        padding: 128px 20px 24px;
+      }
+
+      .hero-title {
+        font-size: 60px;
+      }
+
+      .hero-subtitle {
+        font-size: 13px;
+      }
+
+      .section {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .products {
+        gap: 10px;
+      }
+
+      .product-img {
+        height: 158px;
+      }
+
+      .product-name {
+        font-size: 13px;
+      }
+
+      .product-desc {
+        font-size: 11px;
+      }
+
+      .small-btn {
+        font-size: 11px;
+        height: 34px;
+      }
+
+      .wide-banner {
+        height: 104px;
+      }
+
+      .wide-banner span {
+        font-size: 34px;
+      }
+    }
+
+    @media (max-width: 340px) {
+      .products {
+        grid-template-columns: 1fr;
+      }
+
+      .product-img {
+        height: 220px;
+      }
+
+      .hero-title {
+        font-size: 52px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-logo">A</div>
+        <span>Amore Flow</span>
+      </div>
+
+      <div class="top-actions">
+        <button class="icon-btn" onclick="openFavorites()" aria-label="Избранное">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <button class="icon-btn" onclick="openCart()" aria-label="Корзина">
+          <span class="cart-count" id="cartCount">0</span>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M6 8h12l-1 12H7L6 8Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            <path d="M9 8a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="profile-card">
+      <div class="avatar" id="avatar">Г</div>
+      <div class="profile-info">
+        <div class="hello">Добро пожаловать</div>
+        <div class="profile-name" id="profileName">Гость</div>
+      </div>
+    </div>
+
+    <section class="hero">
+      <img
+        class="hero-photo"
+        id="heroPhoto"
+        src="hero.jpg"
+        alt="Цветы"
+      >
+
+      <div class="hero-content">
+        <h1 class="hero-title">Цветы</h1>
+        <p class="hero-subtitle">которые делают вас счастливее</p>
+        <button class="hero-btn" onclick="scrollToCatalog()">перейти в каталог</button>
+      </div>
+    </section>
+
+    <section class="section" id="catalog">
+      <div class="section-head">
+        <h2 class="section-title">Хиты весны</h2>
+        <button class="section-link" onclick="showAll()">все букеты</button>
+      </div>
+
+      <div class="categories" id="categories"></div>
+      <div class="products" id="products"></div>
+    </section>
+
+    <section class="section">
+      <div class="banner-stack">
+        <div class="wide-banner">
+          <img
+            src="flowers-red.jpg"
+            alt="Креатив"
+            data-fallbacks="flowers-red.png|flowers-red.webp|https://images.unsplash.com/photo-1525310072745-f49212b5ac6d?auto=format&fit=crop&w=1200&q=80"
+          >
+          <span>креатив</span>
+        </div>
+
+        <div class="wide-banner">
+          <img
+            src="flowers-pink.jpg"
+            alt="Эстетика"
+            data-fallbacks="flowers-pink.png|flowers-pink.webp|https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=1200&q=80"
+          >
+          <span>эстетика</span>
+        </div>
+
+        <div class="wide-banner">
+          <img
+            src="flowers-white.jpg"
+            alt="Качество"
+            data-fallbacks="flowers-white.png|flowers-white.webp|https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=1200&q=80"
+          >
+          <span>качество</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="about">
+        <h2 class="section-title">О нас</h2>
+        <p>
+          Собираем свежие букеты, композиции и подарочные наборы под настроение, событие и ваш бюджет.
+          Каждый заказ оформляется аккуратно и передаётся флористу сразу после отправки.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="scrollToTop(this)">
+      <span>⌂</span>
+      <span>Главная</span>
+    </button>
+
+    <button class="nav-btn" onclick="scrollToCatalogNav(this)">
+      <span>✿</span>
+      <span>Каталог</span>
+    </button>
+
+    <button class="nav-btn" onclick="openCartNav(this)">
+      <span>♡</span>
+      <span>Заказ</span>
+    </button>
+
+    <button class="nav-btn" onclick="openProfile(this)">
+      <span>◉</span>
+      <span>Профиль</span>
+    </button>
+  </nav>
+
+  <div class="modal" id="detailsModal">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div class="modal-title" id="detailsTitle">Букет</div>
+        <button class="close" onclick="closeModal('detailsModal')">×</button>
+      </div>
+
+      <div class="details-img">
+        <img id="detailsImage" src="" alt="">
+      </div>
+
+      <div class="details-text" id="detailsText"></div>
+      <div class="price" id="detailsPrice"></div>
+
+      <button class="order-btn" id="detailsOrderBtn">Заказать</button>
+    </div>
+  </div>
+
+  <div class="modal" id="cartModal">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div class="modal-title">Ваш заказ</div>
+        <button class="close" onclick="closeModal('cartModal')">×</button>
+      </div>
+
+      <div id="cartContent"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="orderModal">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div class="modal-title">Оформление</div>
+        <button class="close" onclick="closeModal('orderModal')">×</button>
+      </div>
+
+      <form class="form" onsubmit="sendOrder(event)">
+        <input class="field" id="clientName" type="text" placeholder="Ваше имя" required>
+        <input class="field" id="clientPhone" type="tel" placeholder="Телефон" required>
+        <input class="field" id="clientAddress" type="text" placeholder="Адрес доставки">
+        <textarea class="field" id="clientComment" placeholder="Комментарий к заказу"></textarea>
+        <button class="order-btn" type="submit">Отправить заказ</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="successModal">
+    <div class="modal-card">
+      <div class="success-screen">
+        <div class="success-icon">✓</div>
+        <h3>Заказ ушёл</h3>
+        <p>Спасибо. Мы получили ваш заказ и скоро свяжемся с вами для подтверждения.</p>
+        <button class="order-btn" onclick="closeModal('successModal')">Хорошо</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="profileModal">
+    <div class="modal-card">
+      <div class="modal-top">
+        <div class="modal-title">Профиль</div>
+        <button class="close" onclick="closeModal('profileModal')">×</button>
+      </div>
+
+      <div class="profile-card" style="margin:0 0 14px;">
+        <div class="avatar" id="avatarBig">Г</div>
+        <div class="profile-info">
+          <div class="hello">Ваш профиль</div>
+          <div class="profile-name" id="profileNameBig">Гость</div>
+        </div>
+      </div>
+
+      <div class="about">
+        <p>
+          Ваши данные подставляются в заказ автоматически.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Добавлено в заказ</div>
+
+  <script>
+    const products = [
+      {
+        id: 1,
+        name: "Букет сборный",
+        desc: "Соберём букет по вашим референсам",
+        price: 3490,
+        category: "Хиты",
+        image: "bouquet-1.jpg",
+        fallbacks: [
+          "bouquet-1.png",
+          "bouquet-1.webp",
+          "https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=900&q=80"
+        ],
+        details: "Нежный сборный букет из сезонных цветов. Флорист подберёт оттенки и упаковку под ваше событие."
+      },
+      {
+        id: 2,
+        name: "На 8 марта",
+        desc: "Идеально к празднику",
+        price: 4290,
+        category: "Праздник",
+        image: "bouquet-2.jpg",
+        fallbacks: [
+          "bouquet-2.png",
+          "bouquet-2.webp",
+          "https://images.unsplash.com/photo-1494972308805-463bc619d34e?auto=format&fit=crop&w=900&q=80"
+        ],
+        details: "Яркий праздничный букет с розами и нежными акцентами. Подойдёт для поздравления, свидания или подарка."
+      },
+      {
+        id: 3,
+        name: "Дизайнерский",
+        desc: "Флорист соберёт букет для вас",
+        price: 5590,
+        category: "Премиум",
+        image: "bouquet-3.jpg",
+        fallbacks: [
+          "bouquet-3.png",
+          "bouquet-3.webp",
+          "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=900&q=80"
+        ],
+        details: "Авторская композиция от флориста. Используем необычные формы, зелень и свежие цветы премиального качества."
+      },
+      {
+        id: 4,
+        name: "Нежный крем",
+        desc: "Светлые оттенки и мягкая упаковка",
+        price: 3890,
+        category: "Нежные",
+        image: "bouquet-4.jpg",
+        fallbacks: [
+          "bouquet-4.png",
+          "bouquet-4.webp",
+          "https://images.unsplash.com/photo-1487530811176-3780de880c2d?auto=format&fit=crop&w=900&q=80"
+        ],
+        details: "Спокойный букет в кремовых оттенках. Хороший вариант для подарка без повода."
+      },
+      {
+        id: 5,
+        name: "Розовый сад",
+        desc: "Розы, зелень и воздушная форма",
+        price: 4690,
+        category: "Розы",
+        image: "bouquet-5.jpg",
+        fallbacks: [
+          "bouquet-5.png",
+          "bouquet-5.webp",
+          "https://images.unsplash.com/photo-1508610048659-a06b669e3321?auto=format&fit=crop&w=900&q=80"
+        ],
+        details: "Романтичный букет с розами и сезонной зеленью. Выглядит дорого и аккуратно."
+      },
+      {
+        id: 6,
+        name: "Белая классика",
+        desc: "Минимализм и чистый стиль",
+        price: 4990,
+        category: "Премиум",
+        image: "bouquet-6.jpg",
+        fallbacks: [
+          "bouquet-6.png",
+          "bouquet-6.webp",
+          "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?auto=format&fit=crop&w=900&q=80"
+        ],
+        details: "Белый букет в лаконичном стиле. Подходит для торжеств, фотосессий и важных подарков."
+      }
+    ];
+
+    const categories = ["Все", "Хиты", "Праздник", "Премиум", "Нежные", "Розы"];
+
+    let activeCategory = "Все";
+    let cart = [];
+    let favorites = [];
+    let selectedProduct = null;
+
+    let currentUser = {
+      id: "",
+      name: "Гость",
+      photo: ""
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      initHeroImage();
+      initImageFallbacks();
+      initMiniApp();
+      renderCategories();
+      renderProducts();
+      updateCartCount();
+    });
+
+    function initHeroImage() {
+      const hero = document.getElementById("heroPhoto");
+
+      hero.dataset.fallbacks = [
+        "hero.png",
+        "hero.webp",
+        "main.jpg",
+        "main.png",
+        "flowers-main.jpg",
+        "flowers-main.png",
+        "https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&w=1400&q=85"
+      ].join("|");
+
+      setSmartFallback(hero);
+    }
+
+    function initImageFallbacks() {
+      document.querySelectorAll("img[data-fallbacks]").forEach(img => {
+        setSmartFallback(img);
+      });
+    }
+
+    function setSmartFallback(img) {
+      img.dataset.fallbackIndex = img.dataset.fallbackIndex || "0";
+
+      img.onerror = function () {
+        const fallbacks = (this.dataset.fallbacks || "").split("|").filter(Boolean);
+        let index = Number(this.dataset.fallbackIndex || 0);
+
+        if (index < fallbacks.length) {
+          this.dataset.fallbackIndex = String(index + 1);
+          this.src = fallbacks[index];
+        }
+      };
+    }
+
+    function getProductFallbacks(item) {
+      return item.fallbacks.join("|");
+    }
+
+    function initMiniApp() {
+      try {
+        if (window.Telegram && window.Telegram.WebApp) {
+          const tg = window.Telegram.WebApp;
+          tg.ready();
+          tg.expand();
+
+          const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
+
+          if (user) {
+            currentUser.id = user.id || "";
+            currentUser.name = [user.first_name, user.last_name].filter(Boolean).join(" ") || user.username || "Гость";
+            currentUser.photo = user.photo_url || "";
+          }
+        }
+
+        if (window.max && window.max.profile) {
+          const user = window.max.profile;
+
+          currentUser.id = user.id || currentUser.id;
+          currentUser.name = user.name || user.first_name || user.username || currentUser.name;
+          currentUser.photo = user.photo || user.avatar || user.photo_url || currentUser.photo;
+        }
+
+        if (window.MiniApp && window.MiniApp.user) {
+          const user = window.MiniApp.user;
+
+          currentUser.id = user.id || currentUser.id;
+          currentUser.name = user.name || user.first_name || user.username || currentUser.name;
+          currentUser.photo = user.photo || user.avatar || user.photo_url || currentUser.photo;
+        }
+      } catch (e) {}
+
+      setProfileUI();
+    }
+
+    function setProfileUI() {
+      const name = currentUser.name || "Гость";
+
+      document.getElementById("profileName").textContent = name;
+      document.getElementById("profileNameBig").textContent = name;
+
+      const nameField = document.getElementById("clientName");
+      if (nameField && name !== "Гость") {
+        nameField.value = name;
+      }
+
+      setAvatar("avatar", name, currentUser.photo);
+      setAvatar("avatarBig", name, currentUser.photo);
+    }
+
+    function setAvatar(id, name, photo) {
+      const el = document.getElementById(id);
+      if (!el) return;
+
+      if (photo) {
+        el.innerHTML = `<img src="${photo}" alt="${name}">`;
+      } else {
+        el.textContent = getInitial(name);
+      }
+    }
+
+    function getInitial(name) {
+      return (name || "Г").trim().charAt(0).toUpperCase();
+    }
+
+    function money(value) {
+      return value.toLocaleString("ru-RU") + " ₽";
+    }
+
+    function renderCategories() {
+      const box = document.getElementById("categories");
+
+      box.innerHTML = categories.map(cat => `
+        <button class="cat-btn ${cat === activeCategory ? "active" : ""}" onclick="setCategory('${cat}')">
+          ${cat}
+        </button>
+      `).join("");
+    }
+
+    function renderProducts() {
+      const box = document.getElementById("products");
+
+      const list = activeCategory === "Все"
+        ? products
+        : products.filter(item => item.category === activeCategory);
+
+      box.innerHTML = list.map(item => `
+        <article class="product-card">
+          <button class="fav ${favorites.includes(item.id) ? "active" : ""}" onclick="toggleFavorite(${item.id})">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="${favorites.includes(item.id) ? "currentColor" : "none"}">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div class="product-img">
+            <img
+              src="${item.image}"
+              alt="${item.name}"
+              data-fallbacks="${getProductFallbacks(item)}"
+              onerror="productImageError(this)"
+            >
+          </div>
+
+          <div class="product-body">
+            <div class="product-name">${item.name}</div>
+            <div class="product-desc">${item.desc}</div>
+            <div class="price">${money(item.price)}</div>
+
+            <div class="product-actions">
+              <button class="small-btn" onclick="openDetails(${item.id})">Подробнее</button>
+              <button class="small-btn fill" onclick="addToCart(${item.id})">Заказать</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function productImageError(img) {
+      const fallbacks = (img.dataset.fallbacks || "").split("|").filter(Boolean);
+      let index = Number(img.dataset.fallbackIndex || 0);
+
+      if (index < fallbacks.length) {
+        img.dataset.fallbackIndex = String(index + 1);
+        img.src = fallbacks[index];
+      }
+    }
+
+    function setCategory(cat) {
+      activeCategory = cat;
+      renderCategories();
+      renderProducts();
+    }
+
+    function showAll() {
+      setCategory("Все");
+      scrollToCatalog();
+    }
+
+    function toggleFavorite(id) {
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(item => item !== id);
+      } else {
+        favorites.push(id);
+        showToast("Добавлено в избранное");
+      }
+
+      renderProducts();
+    }
+
+    function openFavorites() {
+      if (!favorites.length) {
+        showToast("В избранном пока пусто");
+        return;
+      }
+
+      activeCategory = "Все";
+      renderCategories();
+
+      const box = document.getElementById("products");
+      const list = products.filter(item => favorites.includes(item.id));
+
+      box.innerHTML = list.map(item => `
+        <article class="product-card">
+          <button class="fav active" onclick="toggleFavorite(${item.id})">♡</button>
+
+          <div class="product-img">
+            <img
+              src="${item.image}"
+              alt="${item.name}"
+              data-fallbacks="${getProductFallbacks(item)}"
+              onerror="productImageError(this)"
+            >
+          </div>
+
+          <div class="product-body">
+            <div class="product-name">${item.name}</div>
+            <div class="product-desc">${item.desc}</div>
+            <div class="price">${money(item.price)}</div>
+
+            <div class="product-actions">
+              <button class="small-btn" onclick="openDetails(${item.id})">Подробнее</button>
+              <button class="small-btn fill" onclick="addToCart(${item.id})">Заказать</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+
+      scrollToCatalog();
+    }
+
+    function addToCart(id) {
+      const item = products.find(product => product.id === id);
+      if (!item) return;
+
+      const exists = cart.find(product => product.id === id);
+
+      if (exists) {
+        exists.qty += 1;
+      } else {
+        cart.push({ ...item, qty: 1 });
+      }
+
+      updateCartCount();
+      showToast("Добавлено в заказ");
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      updateCartCount();
+      renderCart();
+    }
+
+    function updateCartCount() {
+      const count = cart.reduce((sum, item) => sum + item.qty, 0);
+      const el = document.getElementById("cartCount");
+
+      el.textContent = count;
+
+      if (count > 0) {
+        el.style.display = "flex";
+      } else {
+        el.style.display = "none";
+      }
+    }
+
+    function openDetails(id) {
+      const item = products.find(product => product.id === id);
+      if (!item) return;
+
+      selectedProduct = item;
+
+      const detailsImage = document.getElementById("detailsImage");
+
+      document.getElementById("detailsTitle").textContent = item.name;
+      detailsImage.src = item.image;
+      detailsImage.dataset.fallbacks = getProductFallbacks(item);
+      detailsImage.dataset.fallbackIndex = "0";
+      detailsImage.onerror = function () {
+        productImageError(this);
+      };
+
+      document.getElementById("detailsText").textContent = item.details;
+      document.getElementById("detailsPrice").textContent = money(item.price);
+
+      document.getElementById("detailsOrderBtn").onclick = () => {
+        addToCart(item.id);
+        closeModal("detailsModal");
+        openCart();
+      };
+
+      openModal("detailsModal");
+    }
+
+    function openCart() {
+      renderCart();
+      openModal("cartModal");
+    }
+
+    function renderCart() {
+      const box = document.getElementById("cartContent");
+
+      if (!cart.length) {
+        box.innerHTML = `
+          <div class="empty">
+            В заказе пока пусто.<br>
+            Выберите букет из каталога.
+          </div>
+          <button class="order-btn" onclick="closeModal('cartModal'); scrollToCatalog();">Перейти в каталог</button>
+        `;
+        return;
+      }
+
+      const total = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+
+      box.innerHTML = `
+        <div class="cart-list">
+          ${cart.map(item => `
+            <div class="cart-item">
+              <img
+                src="${item.image}"
+                alt="${item.name}"
+                data-fallbacks="${getProductFallbacks(item)}"
+                onerror="productImageError(this)"
+              >
+              <div>
+                <h4>${item.name}</h4>
+                <p>${money(item.price)} · ${item.qty} шт.</p>
+              </div>
+              <button class="remove" onclick="removeFromCart(${item.id})">×</button>
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="total">
+          <span>Итого</span>
+          <span>${money(total)}</span>
+        </div>
+
+        <button class="order-btn" onclick="startOrder()">Оформить заказ</button>
+      `;
+    }
+
+    function startOrder() {
+      closeModal("cartModal");
+      setProfileUI();
+      openModal("orderModal");
+    }
+
+    function sendOrder(event) {
+      event.preventDefault();
+
+      const order = {
+        user: currentUser,
+        name: document.getElementById("clientName").value.trim(),
+        phone: document.getElementById("clientPhone").value.trim(),
+        address: document.getElementById("clientAddress").value.trim(),
+        comment: document.getElementById("clientComment").value.trim(),
+        items: cart.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          qty: item.qty
+        })),
+        total: cart.reduce((sum, item) => sum + item.price * item.qty, 0)
+      };
+
+      try {
+        if (window.Telegram && window.Telegram.WebApp) {
+          window.Telegram.WebApp.sendData(JSON.stringify(order));
+
+          if (window.Telegram.WebApp.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.notificationOccurred("success");
+          }
+        }
+
+        if (window.max && typeof window.max.sendData === "function") {
+          window.max.sendData(JSON.stringify(order));
+        }
+
+        if (window.MiniApp && typeof window.MiniApp.sendData === "function") {
+          window.MiniApp.sendData(JSON.stringify(order));
+        }
+      } catch (e) {}
+
+      cart = [];
+      updateCartCount();
+
+      closeModal("orderModal");
+      openModal("successModal");
+      showToast("Заказ ушёл");
+    }
+
+    function openProfile(btn) {
+      setActiveNav(btn);
+      openModal("profileModal");
+    }
+
+    function openCartNav(btn) {
+      setActiveNav(btn);
+      openCart();
+    }
+
+    function scrollToTop(btn) {
+      setActiveNav(btn);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function scrollToCatalogNav(btn) {
+      setActiveNav(btn);
+      scrollToCatalog();
+    }
+
+    function setActiveNav(btn) {
+      document.querySelectorAll(".nav-btn").forEach(item => item.classList.remove("active"));
+      if (btn) btn.classList.add("active");
+    }
+
+    function scrollToCatalog() {
+      document.getElementById("catalog").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("open");
+      document.body.style.overflow = "";
+
+      const anyOpen = document.querySelector(".modal.open");
+
+      if (anyOpen) {
+        document.body.style.overflow = "hidden";
+      }
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById("toast");
+
+      toast.textContent = text;
+      toast.classList.add("show");
+
+      clearTimeout(window.toastTimer);
+
+      window.toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2200);
+    }
+
+    document.querySelectorAll(".modal").forEach(modal => {
+      modal.addEventListener("click", event => {
+        if (event.target === modal) {
+          modal.classList.remove("open");
+          document.body.style.overflow = "";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
